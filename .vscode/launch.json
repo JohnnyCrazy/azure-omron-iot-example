@@ -1,0 +1,44 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": ".NET Core Launch (StreamService)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-StreamService",
+      "program": "${workspaceFolder}/Omron.2JCIE-BU01.StreamService/bin/Debug/netcoreapp3.1/Omron.2JCIE-BU01.StreamService.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "stopAtEntry": false,
+      "console": "integratedTerminal",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "name": ".NET Core Launch (Example)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-Example",
+      "program": "${workspaceFolder}/Omron.2JCIE-BU01.Example/bin/Debug/netcoreapp3.1/Omron.2JCIE-BU01.Example.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "stopAtEntry": false,
+      "console": "integratedTerminal",
+      "envFile": "${workspaceFolder}/.env"
+    },
+    {
+      "name": ".NET Core Launch (DeviceClient)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-DeviceClient",
+      "program": "${workspaceFolder}/Omron.2JCIE-BU01.DeviceClient/bin/Debug/netcoreapp3.1/Omron.2JCIE-BU01.DeviceClient.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "stopAtEntry": false,
+      "console": "integratedTerminal",
+      "envFile": "${workspaceFolder}/.env"
+    },
+  ]
+}

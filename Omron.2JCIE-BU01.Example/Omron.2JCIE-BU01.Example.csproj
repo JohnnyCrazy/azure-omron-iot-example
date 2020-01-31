@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Omron.2JCIE-BU01\Omron.2JCIE-BU01.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>Omron._2JCIE_BU01.Example</RootNamespace>
+  </PropertyGroup>
+
+</Project>
