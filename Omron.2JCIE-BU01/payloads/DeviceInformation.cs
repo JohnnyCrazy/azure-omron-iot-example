@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using System.Text;
 
 namespace Omron._2JCIE_BU01.Payloads
 {
@@ -6,18 +7,24 @@ namespace Omron._2JCIE_BU01.Payloads
   public struct DeviceInformation
   {
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 10)]
-    public byte[] modelNumber;
+    public byte[] modelNumberRaw;
 
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 10)]
-    public byte[] serialNumber;
+    public byte[] serialNumberRaw;
 
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 5)]
-    public byte[] firmwareVersion;
+    public byte[] firmwareVersionRaw;
 
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 5)]
-    public byte[] hardwareRevision;
+    public byte[] hardwareRevisionRaw;
 
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 5)]
-    public byte[] manufactureName;
+    public byte[] manufactureNameRaw;
+
+    public string modelNumber { get => Encoding.UTF8.GetString(modelNumberRaw); }
+    public string serialNumber { get => Encoding.UTF8.GetString(serialNumberRaw); }
+    public string firmwareVersion { get => Encoding.UTF8.GetString(firmwareVersionRaw); }
+    public string hardwareRevision { get => Encoding.UTF8.GetString(hardwareRevisionRaw); }
+    public string manufactureName { get => Encoding.UTF8.GetString(manufactureNameRaw); }
   }
 }

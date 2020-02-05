@@ -1,13 +1,13 @@
-using Microsoft.Azure.Devices.Client;
-using Microsoft.Azure.Devices.Shared;
-using System.Threading.Tasks;
 using System;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
+using System.IO;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Azure.Devices.Client;
+using Microsoft.Azure.Devices.Shared;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Omron._2JCIE_BU01.Payloads;
-using System.IO;
 
 namespace Omron._2JCIE_BU01.IoTDeviceClient
 {
@@ -89,7 +89,7 @@ namespace Omron._2JCIE_BU01.IoTDeviceClient
         else
           Interval = desired["interval"].value;
 
-        await UpdateReportedProperties(desired);
+        await UpdateReportedProperties(desired, deviceInformation);
         await _client.SetDesiredPropertyUpdateCallbackAsync(this.OnDesiredPropertyUpdated, null);
       }
       catch (System.IO.FileNotFoundException)
@@ -109,12 +109,19 @@ namespace Omron._2JCIE_BU01.IoTDeviceClient
       }
     }
 
-    public async Task UpdateReportedProperties(TwinCollection desired)
+    public async Task UpdateReportedProperties(TwinCollection desired, DeviceInformation? deviceInfo = null)
     {
       Interval = desired.Contains("interval") ? desired["interval"].value : DEFAULT_INTERVAL;
 
       TwinCollection reported = new TwinCollection();
       SetReportedProperty(reported, desired, "interval", _interval);
+      if (deviceInfo != null)
+      {
+        reported["manufacturer"] = deviceInfo?.manufactureName;
+        reported["model"] = deviceInfo?.modelNumber;
+        reported["swVersion"] = deviceInfo?.firmwareVersion;
+        reported["serialNumber"] = deviceInfo?.serialNumberRaw;
+      }
       await _client.UpdateReportedPropertiesAsync(reported);
     }
 

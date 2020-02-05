@@ -1,0 +1,170 @@
+{
+  "@id": "urn:t_jodell:Environmental_Sensor_Omron_2JCIE_BU01:1",
+  "@type": "CapabilityModel",
+  "displayName": "Environmental Sensor Omron 2JCIE BU01",
+  "implements": [
+    {
+      "@type": "InterfaceInstance",
+      "name": "sensor",
+      "schema": {
+        "@id": "urn:t_jodell:Environmental_Sensor_Omron_2JCIE_BU01:Sensor:1",
+        "@type": "Interface",
+        "displayName": "Sensor Information",
+        "@context": "http://azureiot.com/v1/contexts/IoTModel.json",
+        "contents": [
+          {
+            "@type": "Property",
+            "name": "interval",
+            "displayName": "Interval",
+            "displayUnit": "ms",
+            "schema": "long",
+            "writable": true,
+            "comment": "This specifys the interval between sensor telemetry data in milliseconds"
+          },
+          {
+            "@type": "Telemetry",
+            "name": "temperature",
+            "displayName": "Temperature",
+            "displayUnit": "C°",
+            "schema": "float",
+            "comment": "The measured Temperature"
+          },
+          {
+            "@type": "Telemetry",
+            "name": "relativeHumidity",
+            "displayName": "Relative Humidity",
+            "displayUnit": "%RH",
+            "schema": "float",
+            "comment": "The measured Relative Humidity"
+          },
+          {
+            "@type": "Telemetry",
+            "name": "ambientLight",
+            "displayName": "Ambient Light",
+            "displayUnit": "LX",
+            "schema": "long",
+            "comment": "The measured Ambient Light"
+          },
+          {
+            "@type": "Telemetry",
+            "name": "barometricPressure",
+            "displayName": "Barometric Pressure",
+            "displayUnit": "hPa",
+            "schema": "double",
+            "comment": "The measured Barometric Pressure"
+          },
+          {
+            "@type": "Telemetry",
+            "name": "soundNoise",
+            "displayName": "Sound Noise",
+            "displayUnit": "db",
+            "schema": "float",
+            "comment": "The measured Sound Noise"
+          },
+          {
+            "@type": "Telemetry",
+            "name": "eTVOC",
+            "displayName": "eTVOC",
+            "displayUnit": "ppb",
+            "schema": "integer",
+            "comment": "The measured eTVOC"
+          },
+          {
+            "@type": "Telemetry",
+            "name": "eCO2",
+            "displayName": "eCO2",
+            "displayUnit": "ppm",
+            "schema": "integer",
+            "comment": "The measured eCO2"
+          },
+          {
+            "@type": "Telemetry",
+            "name": "discomfortIndex",
+            "displayName": "Discomfort Index",
+            "schema": "double",
+            "comment": "The measured Discomfort Index"
+          },
+          {
+            "@type": "Telemetry",
+            "name": "heatStroke",
+            "displayName": "Heat Stroke",
+            "displayUnit": "C°",
+            "schema": "double",
+            "comment": "The measured Heat Stroke"
+          },
+          {
+            "@type": "Telemetry",
+            "name": "vibrationInformation",
+            "displayName": "Vibration Information",
+            "schema": "integer",
+            "comment": "The measured Vibration Information (0,1,2)"
+          },
+          {
+            "@type": "Telemetry",
+            "name": "siValue",
+            "displayName": "SI Value",
+            "displayUnit": "kine",
+            "schema": "double",
+            "comment": "The measured SI Value"
+          },
+          {
+            "@type": "Telemetry",
+            "name": "pga",
+            "displayName": "PGA",
+            "displayUnit": "gal",
+            "schema": "double",
+            "comment": "The measured PGA"
+          },
+          {
+            "@type": "Telemetry",
+            "name": "seismicIntensity",
+            "displayName": "Seismic Intensity",
+            "schema": "double",
+            "comment": "The measured Seismic Intensity"
+          }
+        ]
+      }
+    },
+    {
+      "@type": "InterfaceInstance",
+      "name": "deviceinfo",
+      "schema": {
+        "@id": "urn:azureiot:DeviceManagement:DeviceInformation:1",
+        "@type": "Interface",
+        "displayName": "Device Information",
+        "@context": "http://azureiot.com/v1/contexts/IoTModel.json",
+        "contents": [
+          {
+            "@type": "Property",
+            "name": "manufacturer",
+            "displayName": "Manufacturer",
+            "schema": "string",
+            "comment": "Company name of the device manufacturer. This could be the same as the name of the original equipment manufacturer (OEM). Ex. Contoso."
+          },
+          {
+            "@type": "Property",
+            "name": "model",
+            "displayName": "Device model",
+            "schema": "string",
+            "comment": "Device model name or ID. Ex. Surface Book 2."
+          },
+          {
+            "@type": "Property",
+            "name": "swVersion",
+            "displayName": "Software version",
+            "schema": "string",
+            "comment": "Version of the software on your device. This could be the version of your firmware. Ex. 1.3.45"
+          },
+          {
+            "@type": "Property",
+            "name": "serialNumber",
+            "displayName": "Serial Number",
+            "schema": "string",
+            "comment": "Serial Number"
+          }
+        ]
+      }
+    }
+  ],
+  "@context": "http://azureiot.com/v1/contexts/IoTModel.json"
+}
