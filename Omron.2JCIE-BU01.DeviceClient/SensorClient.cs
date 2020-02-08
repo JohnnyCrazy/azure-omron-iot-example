@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.Azure.Devices.Client;
 using Microsoft.Azure.Devices.Shared;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Omron._2JCIE_BU01.Payloads;
 
 namespace Omron._2JCIE_BU01.IoTDeviceClient
@@ -19,7 +18,6 @@ namespace Omron._2JCIE_BU01.IoTDeviceClient
     private WebSocketHandler _webSocketHandler;
 
     private bool _enableFileUpload;
-    private bool _enableStreaming;
     private string _port;
     private int _interval;
     public int Interval
@@ -34,11 +32,10 @@ namespace Omron._2JCIE_BU01.IoTDeviceClient
 
     private const int DEFAULT_INTERVAL = 10_000;
 
-    public SensorClient(DeviceClient client, bool enableFileUpload, bool enableStreaming)
+    public SensorClient(DeviceClient client, bool enableFileUpload)
     {
       _client = client;
       _enableFileUpload = enableFileUpload;
-      _enableStreaming = enableStreaming;
 
       _timer = new Timer(this.OnTimerElapsed);
       _webSocketHandler = new WebSocketHandler(_client);
@@ -48,20 +45,27 @@ namespace Omron._2JCIE_BU01.IoTDeviceClient
     {
       await _sensor.SetLED(true, 255, 255, 255);
       // built in delay
-      LatestDataLong data = await _sensor.GetLatestData();
-      byte[] jsonData = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data));
-
-      // Send a message
-      var msg = new Message(jsonData);
-      await _client.SendEventAsync(msg);
-
-      if (_enableFileUpload)
+      try
       {
-        string time = DateTime.UtcNow.ToString("yyyy/MM/dd/HH_mm_ss");
-        await _client.UploadToBlobAsync($"{time}.json", new MemoryStream(jsonData));
+        LatestDataLong data = await _sensor.GetLatestData();
+        byte[] jsonData = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(data));
+
+        // Send a message
+        var msg = new Message(jsonData);
+        await _client.SendEventAsync(msg);
+
+        if (_enableFileUpload)
+        {
+          string time = DateTime.UtcNow.ToString("yyyy/MM/dd/HH_mm_ss");
+          await _client.UploadToBlobAsync($"{time}.json", new MemoryStream(jsonData));
+        }
+        await Task.Delay(1000);
+        await _sensor.SetLED(false, 255, 255, 255);
       }
-      await Task.Delay(1000);
-      await _sensor.SetLED(false, 255, 255, 255);
+      catch
+      {
+        return;
+      }
     }
 
     public async Task Initialize()
@@ -101,7 +105,7 @@ namespace Omron._2JCIE_BU01.IoTDeviceClient
 
     public async Task WaitForStreamRequest()
     {
-      using (var cancelToken = new CancellationTokenSource(TimeSpan.MaxValue))
+      using (var cancelToken = new CancellationTokenSource(TimeSpan.FromHours(1)))
       {
         DeviceStreamRequest req = await _client.WaitForDeviceStreamRequestAsync(cancelToken.Token);
         if (req != null)
@@ -125,6 +129,7 @@ namespace Omron._2JCIE_BU01.IoTDeviceClient
       await _client.UpdateReportedPropertiesAsync(reported);
     }
 
+    // Special method, IoT Central compatible, only needed for writeable properties
     private void SetReportedProperty<T>(TwinCollection reported, TwinCollection desired, string key, T value)
     {
       reported[key] = new
@@ -154,25 +159,3 @@ namespace Omron._2JCIE_BU01.IoTDeviceClient
     }
   }
 }
-
-// {
-//   { "port", _port},
-//   { "interval", new JObject
-//     {
-//       {"value", _interval},
-//       {"status", "completed"},
-//       {"desiredVersion", desired.Version},
-//       {"message", "Processed"}
-//     }
-//   },
-//   {
-//     "device_information", new JObject
-//     {
-//       { "model_number", Encoding.UTF8.GetString(deviceInformation.modelNumber) },
-//       { "serial_number", Encoding.UTF8.GetString(deviceInformation.serialNumber) },
-//       { "firmware_version", Encoding.UTF8.GetString(deviceInformation.firmwareVersion) },
-//       { "hardware_revision", Encoding.UTF8.GetString(deviceInformation.hardwareRevision) },
-//       { "manufacture_name", Encoding.UTF8.GetString(deviceInformation.manufactureName) }
-//     }
-//   }
-// };

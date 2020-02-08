@@ -16,7 +16,7 @@ namespace Omron._2JCIE_BU01.StreamService
       Console.WriteLine("Starting service...");
       using (ServiceClient client = ServiceClient.CreateFromConnectionString(IOT_HUB_CONNECTION_STRING))
       {
-        var req = new DeviceStreamRequest(streamName: "TestStream");
+        var req = new DeviceStreamRequest("TestStream");
         DeviceStreamResponse res = await client.CreateStreamAsync(DEVICE_ID, req);
 
         if (res.IsAccepted)

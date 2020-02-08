@@ -12,8 +12,8 @@ namespace Omron._2JCIE_BU01
   {
     SerialPort _serialPort;
 
-    public int ReadDelay { get; set; } = 200;
-    public int WriteDelay { get; set; } = 200;
+    public int ReadDelay { get; set; } = 400;
+    public int WriteDelay { get; set; } = 400;
     public Omron2JCI_BU01(string port)
     {
       _serialPort = new SerialPort(port);

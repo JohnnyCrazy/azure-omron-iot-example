@@ -35,10 +35,17 @@ namespace Omron._2JCIE_BU01.IoTDeviceClient
         {
           using (DeviceClient client = await GetDeviceClient(security, transport))
           {
-            using (var sensorClient = new SensorClient(client, ENABLE_FILE_UPLOAD, ENABLE_STREAMING))
+            using (var sensorClient = new SensorClient(client, ENABLE_FILE_UPLOAD))
             {
               await sensorClient.Initialize();
               Console.WriteLine("Sensor Client initialized. Ready for desired props, methods, telemetry data...");
+              if (ENABLE_STREAMING)
+              {
+                while (true)
+                {
+                  await sensorClient.WaitForStreamRequest();
+                }
+              }
               await Task.Delay(TimeSpan.FromHours(1));
               return 0;
             }
