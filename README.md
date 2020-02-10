@@ -23,4 +23,4 @@ This repository contains multiple exemplary .NET/C# Projects for getting started
 * [Development Setup](docs/guides/dev-setup.md)
 * [Setup your IoT Services](docs/guides/iot-setup.md)
 * [Run Omron.2JCIE-BU01.DeviceClient on IoT Hub](docs/guides/device-client-iothub.md)
-* [Run Omron.2JCIE-BU01.DeviceClient on IoT Central](docs/guides/device-client-iothub.md)
+* [Run Omron.2JCIE-BU01.DeviceClient on IoT Central](docs/guides/device-client-iotcentral.md)
