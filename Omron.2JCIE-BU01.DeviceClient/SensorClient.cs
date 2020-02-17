@@ -103,13 +103,16 @@ namespace Omron._2JCIE_BU01.IoTDeviceClient
       }
     }
 
-    public async Task WaitForStreamRequest()
+    public async void WaitForStreamRequest()
     {
-      using (var cancelToken = new CancellationTokenSource(TimeSpan.FromHours(1)))
+      while (true)
       {
-        DeviceStreamRequest req = await _client.WaitForDeviceStreamRequestAsync(cancelToken.Token);
-        if (req != null)
-          await _webSocketHandler.HandleStreamRequest(_sensor, req, cancelToken);
+        using(var cancelToken = new CancellationTokenSource(TimeSpan.FromHours(1)))
+        {
+          DeviceStreamRequest req = await _client.WaitForDeviceStreamRequestAsync(cancelToken.Token);
+          if (req != null)
+            await _webSocketHandler.HandleStreamRequest(_sensor, req, cancelToken);
+        }
       }
     }
 

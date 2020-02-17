@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
@@ -14,16 +14,16 @@ namespace Omron._2JCIE_BU01.StreamService
     static async Task Main(string[] args)
     {
       Console.WriteLine("Starting service...");
-      using (ServiceClient client = ServiceClient.CreateFromConnectionString(IOT_HUB_CONNECTION_STRING))
+      using(ServiceClient client = ServiceClient.CreateFromConnectionString(IOT_HUB_CONNECTION_STRING))
       {
         var req = new DeviceStreamRequest("TestStream");
         DeviceStreamResponse res = await client.CreateStreamAsync(DEVICE_ID, req);
 
         if (res.IsAccepted)
         {
-          using (var cancelToken = new CancellationTokenSource())
+          using(var cancelToken = new CancellationTokenSource())
           {
-            using (ClientWebSocket webSocket = new ClientWebSocket())
+            using(ClientWebSocket webSocket = new ClientWebSocket())
             {
               webSocket.Options.SetRequestHeader("Authorization", $"Bearer {res.AuthorizationToken}");
               await webSocket.ConnectAsync(res.Url, cancelToken.Token);

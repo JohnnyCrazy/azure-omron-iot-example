@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Azure.Devices.Client;
 using Microsoft.Azure.Devices.Provisioning.Client;
@@ -28,23 +29,21 @@ namespace Omron._2JCIE_BU01.IoTDeviceClient
       Console.WriteLine($"-> INDIVIDUAL_ENROLLMENT_PRIMARY_KEY: {INDIVIDUAL_ENROLLMENT_PRIMARY_KEY}");
       Console.WriteLine($"-> INDIVIDUAL_ENROLLMENT_SECONDARY_KEY: {INDIVIDUAL_ENROLLMENT_SECONDARY_KEY}");
 
-      using (var security = new SecurityProviderSymmetricKey(
+      using(var security = new SecurityProviderSymmetricKey(
         REGISTRATION_ID, INDIVIDUAL_ENROLLMENT_PRIMARY_KEY, INDIVIDUAL_ENROLLMENT_SECONDARY_KEY))
       {
-        using (var transport = new ProvisioningTransportHandlerMqtt(TransportFallbackType.TcpOnly))
+        using(var transport = new ProvisioningTransportHandlerMqtt(TransportFallbackType.TcpOnly))
         {
-          using (DeviceClient client = await GetDeviceClient(security, transport))
+          using(DeviceClient client = await GetDeviceClient(security, transport))
           {
-            using (var sensorClient = new SensorClient(client, ENABLE_FILE_UPLOAD))
+            using(var sensorClient = new SensorClient(client, ENABLE_FILE_UPLOAD))
             {
               await sensorClient.Initialize();
               Console.WriteLine("Sensor Client initialized. Ready for desired props, methods, telemetry data...");
+
               if (ENABLE_STREAMING)
               {
-                while (true)
-                {
-                  await sensorClient.WaitForStreamRequest();
-                }
+                sensorClient.WaitForStreamRequest();
               }
               await Task.Delay(TimeSpan.FromHours(1));
               return 0;
